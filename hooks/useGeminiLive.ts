@@ -96,6 +96,11 @@ const useGeminiLive = (setTranscriptionHistory: Dispatch<SetStateAction<Transcri
     setCurrentTranscription({ user: '', model: '' });
 
     try {
+      // Fail fast if the API key is missing to provide a clearer error message.
+      if (!process.env.API_KEY) {
+        throw new Error("API_KEY_MISSING");
+      }
+        
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       mediaStreamRef.current = stream;
 
@@ -246,12 +251,12 @@ const useGeminiLive = (setTranscriptionHistory: Dispatch<SetStateAction<Transcri
       });
     } catch (error) {
       console.error("Failed to start session:", error);
-      let errorMessage = "संभाषण सुरू करता आले नाही.";
+      let errorMessage = "संभाषण सुरू करता आले नाही. कृपया तुमचे इंटरनेट कनेक्शन तपासा.";
       if (error instanceof Error) {
         if (error.name === 'NotAllowedError') {
-          errorMessage = "मायक्रोफोन वापरण्याची परवानगी आवश्यक आहे.";
-        } else if (error.message.toLowerCase().includes('api key not valid')) {
-          errorMessage = "तुमची API की चुकीची आहे. कृपया योग्य की वापरून पुन्हा प्रयत्न करा.";
+          errorMessage = "मायक्रोफोन वापरण्याची परवानगी आवश्यक आहे. कृपया पेज रिफ्रेश करून परवानगी द्या.";
+        } else if (error.message === 'API_KEY_MISSING' || error.message.toLowerCase().includes('api key not valid')) {
+          errorMessage = "API की चुकीची किंवा सापडली नाही. कृपया ॲपच्या सेटिंग्ज तपासा.";
         }
       }
       setError(errorMessage);
