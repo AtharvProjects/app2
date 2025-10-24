@@ -47,11 +47,14 @@ const ConversationManager: React.FC = () => {
             <button
               onClick={closeSession}
               disabled={status === ConversationStatus.CONNECTING}
-              className={`px-10 py-4 text-lg font-bold text-white rounded-full shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 w-full sm:w-auto
-                ${status === ConversationStatus.CONNECTING ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600 focus:ring-red-300'}
+              className={`flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white rounded-full shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 w-full sm:w-auto
+                ${status === ConversationStatus.CONNECTING ? 'bg-gray-400 cursor-not-allowed' : 'bg-purple-600 hover:bg-purple-700 focus:ring-purple-400'}
               `}
             >
-              {status === ConversationStatus.CONNECTING ? 'जोडत आहे...' : 'सत्र थांबवा'}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.667 0l3.181-3.183m-4.991-2.691L7.985 5.644m0 0L4.804 8.827m3.181-3.183a8.25 8.25 0 0111.667 0l3.181 3.183" />
+              </svg>
+              <span>{status === ConversationStatus.CONNECTING ? 'जोडत आहे...' : 'नवीन संभाषण'}</span>
             </button>
           ) : (
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
@@ -77,9 +80,21 @@ const ConversationManager: React.FC = () => {
         </div>
 
         {error && (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-md" role="alert">
-            <p className="font-bold">एक त्रुटी आली:</p>
-            <p>{error}</p>
+          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-md flex flex-col sm:flex-row justify-between items-center gap-4" role="alert">
+            <div className="flex-grow">
+              <p className="font-bold">एक त्रुटी आली:</p>
+              <p>{error}</p>
+            </div>
+            <button
+              onClick={() => window.location.reload()}
+              className="flex-shrink-0 flex items-center justify-center gap-2 bg-purple-600 text-white font-semibold py-2 px-4 rounded-full shadow-sm hover:bg-purple-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-100 focus:ring-purple-500"
+              aria-label="पुन्हा प्रयत्न करा"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.667 0l3.181-3.183m-4.991-2.691L7.985 5.644m0 0L4.804 8.827m3.181-3.183a8.25 8.25 0 0111.667 0l3.181 3.183" />
+              </svg>
+              <span>पुन्हा प्रयत्न करा</span>
+            </button>
           </div>
         )}
         
